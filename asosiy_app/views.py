@@ -158,7 +158,7 @@ class MahsulotDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         
         # Mahsulotga tegishli tasdiqlangan sharhlarni olish
-        context['sharhlar'] = self.object.sharhlar.filter(tasdiqlangan=True).order_by('-yaratilgan_sana')
+        context['sharhlar'] = self.object.sharhlar.all().order_by('-yaratilgan_sana')
         
         # Sharh formasi
         context['sharh_form'] = SharhForm()
