@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Profilni tahrirlash - Django Shablon{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Profilni tahrirlash</h1>
+            
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <h2 class="text-xl font-semibold mb-4">Asosiy ma'lumotlar</h2>
+                {% for field in user_form %}
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
+                <h2 class="text-xl font-semibold mb-4 mt-8">Qo'shimcha ma'lumotlar</h2>
+                {% for field in profil_form %}
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <p class="text-gray-500 text-sm mt-1">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% if field.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
+                <div class="flex space-x-4">
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-semibold">
+                        <i class="fas fa-save"></i> Saqlash
+                    </button>
+                    <a href="{% url 'profil' %}" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 font-semibold">
+                        <i class="fas fa-times"></i> Bekor qilish
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

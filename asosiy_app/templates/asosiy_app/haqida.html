@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Haqida - Django Shablon{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-800 mb-8 text-center">Loyiha haqida</h1>
+        
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Django Shablon Loyihasi</h2>
+            <p class="text-gray-700 mb-4">
+                Bu loyiha Django freymvorki asosida yaratilgan to'liq funksional veb-ilova shablonidir.
+                Loyiha barcha asosiy imkoniyatlar bilan jihozlangan va o'zbek tilida to'liq izohlangan.
+            </p>
+            
+            <h3 class="text-xl font-semibold mb-3 mt-6">Asosiy xususiyatlar:</h3>
+            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                <li>To'liq o'zbekcha izohlar va dokumentatsiya</li>
+                <li>Tailwind CSS bilan zamonaviy dizayn</li>
+                <li>Foydalanuvchi autentifikatsiyasi (kirish, ro'yxatdan o'tish)</li>
+                <li>Profil boshqaruvi</li>
+                <li>CRUD operatsiyalari (Yaratish, O'qish, Yangilash, O'chirish)</li>
+                <li>Django Signals tizimi</li>
+                <li>Admin panel sozlamalari</li>
+                <li>Formalar va validatsiya</li>
+                <li>Ko'p ma'lumotlar bazasiga moslik (SQLite, PostgreSQL, MySQL)</li>
+                <li>Media va statik fayllar boshqaruvi</li>
+            </ul>
+            
+            <h3 class="text-xl font-semibold mb-3 mt-6">Texnologiyalar:</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg text-center">
+                    <i class="fab fa-python text-4xl text-blue-600 mb-2"></i>
+                    <p class="font-semibold">Python</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg text-center">
+                    <i class="fas fa-code text-4xl text-green-600 mb-2"></i>
+                    <p class="font-semibold">Django</p>
+                </div>
+                <div class="bg-cyan-50 p-4 rounded-lg text-center">
+                    <i class="fab fa-css3-alt text-4xl text-cyan-600 mb-2"></i>
+                    <p class="font-semibold">Tailwind CSS</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg text-center">
+                    <i class="fas fa-database text-4xl text-purple-600 mb-2"></i>
+                    <p class="font-semibold">SQL</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-8 text-center">
+            <h2 class="text-2xl font-semibold mb-4">Loyihadan foydalanish</h2>
+            <p class="mb-6">
+                Bu shablon ochiq kodli va bepul. Uni o'z loyihangiz uchun ishlatishingiz mumkin.
+                Barcha kodlar to'liq izohlangan va tushunarli tarzda yozilgan.
+            </p>
+            <a href="{% url 'aloqa' %}" class="bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-gray-100 inline-block font-semibold">
+                <i class="fas fa-envelope"></i> Biz bilan bog'lanish
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

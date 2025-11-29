@@ -1,0 +1,25 @@
+# Django Shablon - Kerakli paketlar ro'yxati
+# Python 3.11+ uchun
+
+# Django freymvorki
+Django==5.2.8
+
+# Rasm bilan ishlash uchun
+Pillow==11.0.0
+
+# MySQL ma'lumotlar bazasi uchun
+# Faqat MySQL ishlatmoqchi bo'lsangiz kerak
+mysqlclient==2.2.7
+
+# PostgreSQL ma'lumotlar bazasi uchun
+# Faqat PostgreSQL ishlatmoqchi bo'lsangiz kerak
+psycopg2-binary==2.9.10
+
+# Production uchun (ixtiyoriy)
+# gunicorn==23.0.0
+# whitenoise==6.8.2
+# django-environ==0.11.2
+
+# Development uchun (ixtiyoriy)
+# django-debug-toolbar==4.4.6
+# ipython==8.29.0

@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block title %}Bosh sahifa - Django Shablon{% endblock %}
+
+{% block content %}
+<!-- Hero Section - Asosiy banner -->
+<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl">
+            <h1 class="text-5xl font-bold mb-4">Django Shablon Loyihasi</h1>
+            <p class="text-xl mb-8">
+                To'liq funksional, o'zbekcha izohlangan, Tailwind CSS bilan bezatilgan Django loyihasi shabloni.
+                Barcha asosiy imkoniyatlar tayyor holda!
+            </p>
+            <div class="flex space-x-4">
+                <a href="{% url 'mahsulotlar' %}" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                    <i class="fas fa-box"></i> Mahsulotlarni ko'rish
+                </a>
+                <a href="{% url 'haqida' %}" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
+                    <i class="fas fa-info-circle"></i> Batafsil
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Kategoriyalar -->
+<section class="container mx-auto px-4 py-12">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8">Kategoriyalar</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {% for kategoriya in kategoriyalar %}
+        <a href="{% url 'kategoriya_mahsulotlar' kategoriya.id %}" class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition text-center">
+            {% if kategoriya.rasm %}
+            <img src="{{ kategoriya.rasm.url }}" alt="{{ kategoriya.nomi }}" class="w-16 h-16 mx-auto mb-3 object-cover rounded-full">
+            {% else %}
+            <div class="w-16 h-16 mx-auto mb-3 bg-blue-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-folder text-2xl text-blue-600"></i>
+            </div>
+            {% endif %}
+            <h3 class="font-semibold text-gray-800">{{ kategoriya.nomi }}</h3>
+        </a>
+        {% empty %}
+        <div class="col-span-full text-center text-gray-500 py-8">
+            <i class="fas fa-inbox text-4xl mb-4"></i>
+            <p>Hozircha kategoriyalar yo'q</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Mashhur mahsulotlar -->
+<section class="bg-gray-100 py-12">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-3xl font-bold text-gray-800">Mashhur mahsulotlar</h2>
+            <a href="{% url 'mahsulotlar' %}" class="text-blue-600 hover:text-blue-700 font-semibold">
+                Barchasini ko'rish <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for mahsulot in mashhur_mahsulotlar %}
+            <div class="bg-white rounded-lg shadow hover:shadow-xl transition overflow-hidden">
+                <!-- Mahsulot rasmi -->
+                <div class="relative">
+                    <a href="{% url 'mahsulot_batafsil' mahsulot.slug %}">
+                        {% if mahsulot.rasm %}
+                        <img src="{{ mahsulot.rasm.url }}" alt="{{ mahsulot.nomi }}" class="w-full h-48 object-cover">
+                        {% else %}
+                        <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-gray-400"></i>
+                        </div>
+                        {% endif %}
+                    </a>
+                    
+                    <!-- Chegirma badge -->
+                    {% if mahsulot.chegirma_narxi %}
+                    <div class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                        -{{ mahsulot.chegirma_foizi }}%
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Yangi badge -->
+                    {% if mahsulot.yangi %}
+                    <div class="absolute top-2 left-2 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                        Yangi
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Mahsulot ma'lumotlari -->
+                <div class="p-4">
+                    <a href="{% url 'mahsulot_batafsil' mahsulot.slug %}" class="text-lg font-semibold text-gray-800 hover:text-blue-600 line-clamp-2">
+                        {{ mahsulot.nomi }}
+                    </a>
+                    
+                    <p class="text-gray-600 text-sm mt-2 line-clamp-2">
+                        {{ mahsulot.qisqacha_tavsif }}
+                    </p>
+                    
+                    <!-- Reyting -->
+                    <div class="flex items-center mt-2">
+                        <div class="flex text-yellow-400">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= mahsulot.reyting %}
+                                <i class="fas fa-star"></i>
+                                {% else %}
+                                <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <span class="text-gray-600 text-sm ml-2">({{ mahsulot.reyting }})</span>
+                    </div>
+                    
+                    <!-- Narx -->
+                    <div class="mt-4 flex items-center justify-between">
+                        <div>
+                            {% if mahsulot.chegirma_narxi %}
+                            <span class="text-gray-400 line-through text-sm">{{ mahsulot.narx|floatformat:0 }} so'm</span>
+                            <span class="text-2xl font-bold text-blue-600 block">{{ mahsulot.chegirma_narxi|floatformat:0 }} so'm</span>
+                            {% else %}
+                            <span class="text-2xl font-bold text-blue-600">{{ mahsulot.narx|floatformat:0 }} so'm</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Ko'rish tugmasi -->
+                    <a href="{% url 'mahsulot_batafsil' mahsulot.slug %}" class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition text-center block">
+                        <i class="fas fa-eye"></i> Ko'rish
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center text-gray-500 py-12">
+                <i class="fas fa-box-open text-5xl mb-4"></i>
+                <p class="text-xl">Hozircha mashhur mahsulotlar yo'q</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Yangi mahsulotlar -->
+<section class="container mx-auto px-4 py-12">
+    <div class="flex items-center justify-between mb-8">
+        <h2 class="text-3xl font-bold text-gray-800">Yangi mahsulotlar</h2>
+        <a href="{% url 'mahsulotlar' %}" class="text-blue-600 hover:text-blue-700 font-semibold">
+            Barchasini ko'rish <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for mahsulot in yangi_mahsulotlar %}
+        <div class="bg-white rounded-lg shadow hover:shadow-xl transition overflow-hidden">
+            <!-- Mahsulot rasmi -->
+            <div class="relative">
+                <a href="{% url 'mahsulot_batafsil' mahsulot.slug %}">
+                    {% if mahsulot.rasm %}
+                    <img src="{{ mahsulot.rasm.url }}" alt="{{ mahsulot.nomi }}" class="w-full h-48 object-cover">
+                    {% else %}
+                    <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-image text-4xl text-gray-400"></i>
+                    </div>
+                    {% endif %}
+                </a>
+                
+                <!-- Yangi badge -->
+                <div class="absolute top-2 left-2 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                    Yangi
+                </div>
+            </div>
+            
+            <!-- Mahsulot ma'lumotlari -->
+            <div class="p-4">
+                <a href="{% url 'mahsulot_batafsil' mahsulot.slug %}" class="text-lg font-semibold text-gray-800 hover:text-blue-600 line-clamp-2">
+                    {{ mahsulot.nomi }}
+                </a>
+                
+                <p class="text-gray-600 text-sm mt-2 line-clamp-2">
+                    {{ mahsulot.qisqacha_tavsif }}
+                </p>
+                
+                <!-- Narx -->
+                <div class="mt-4">
+                    <span class="text-2xl font-bold text-blue-600">{{ mahsulot.joriy_narx|floatformat:0 }} so'm</span>
+                </div>
+                
+                <!-- Ko'rish tugmasi -->
+                <a href="{% url 'mahsulot_batafsil' mahsulot.slug %}" class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition text-center block">
+                    <i class="fas fa-eye"></i> Ko'rish
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center text-gray-500 py-12">
+            <i class="fas fa-box-open text-5xl mb-4"></i>
+            <p class="text-xl">Hozircha yangi mahsulotlar yo'q</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Xususiyatlar -->
+<section class="bg-blue-50 py-12">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Nima uchun biz?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-shipping-fast text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Tez yetkazib berish</h3>
+                <p class="text-gray-600">Buyurtmangizni 24 soat ichida yetkazib beramiz</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-shield-alt text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Xavfsiz to'lov</h3>
+                <p class="text-gray-600">Barcha to'lov usullari xavfsiz va ishonchli</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-headset text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">24/7 Qo'llab-quvvatlash</h3>
+                <p class="text-gray-600">Har qanday savolingizga javob berishga tayyormiz</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

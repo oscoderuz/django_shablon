@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil - Django Shablon{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <div class="flex items-center justify-between mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Mening profilim</h1>
+                <a href="{% url 'profil_tahrirlash' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                    <i class="fas fa-edit"></i> Tahrirlash
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Profil rasmi -->
+                <div class="text-center">
+                    {% if profil.rasm %}
+                    <img src="{{ profil.rasm.url }}" alt="{{ user.username }}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    {% else %}
+                    <div class="w-32 h-32 rounded-full mx-auto mb-4 bg-blue-600 flex items-center justify-center text-white text-4xl font-bold">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+                    {% endif %}
+                    <h2 class="text-xl font-semibold">{{ profil.toliq_ism }}</h2>
+                    <p class="text-gray-600">@{{ user.username }}</p>
+                </div>
+                
+                <!-- Profil ma'lumotlari -->
+                <div class="md:col-span-2">
+                    <h3 class="text-xl font-semibold mb-4">Shaxsiy ma'lumotlar</h3>
+                    <div class="space-y-3">
+                        <div class="flex">
+                            <span class="font-semibold w-32">Email:</span>
+                            <span>{{ user.email|default:"Kiritilmagan" }}</span>
+                        </div>
+                        <div class="flex">
+                            <span class="font-semibold w-32">Telefon:</span>
+                            <span>{{ profil.telefon|default:"Kiritilmagan" }}</span>
+                        </div>
+                        <div class="flex">
+                            <span class="font-semibold w-32">Shahar:</span>
+                            <span>{{ profil.shahar|default:"Kiritilmagan" }}</span>
+                        </div>
+                        <div class="flex">
+                            <span class="font-semibold w-32">Mamlakat:</span>
+                            <span>{{ profil.mamlakat }}</span>
+                        </div>
+                        {% if profil.bio %}
+                        <div>
+                            <span class="font-semibold block mb-2">Bio:</span>
+                            <p class="text-gray-700">{{ profil.bio }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sharhlar -->
+        <div class="mt-8 bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Mening sharhlarim ({{ sharhlar.count }})</h2>
+            <div class="space-y-4">
+                {% for sharh in sharhlar %}
+                <div class="border-b pb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <a href="{% url 'mahsulot_batafsil' sharh.mahsulot.slug %}" class="text-blue-600 hover:underline font-semibold">
+                            {{ sharh.mahsulot.nomi }}
+                        </a>
+                        <span class="text-sm text-gray-500">{{ sharh.yaratilgan_sana|date:"d.m.Y" }}</span>
+                    </div>
+                    <div class="flex text-yellow-400 mb-2">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= sharh.baho %}
+                            <i class="fas fa-star"></i>
+                            {% else %}
+                            <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <p class="text-gray-700">{{ sharh.matn }}</p>
+                    {% if not sharh.tasdiqlangan %}
+                    <span class="text-yellow-600 text-sm">⏳ Moderatsiyada</span>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p class="text-gray-500 text-center py-8">Hozircha sharhlar yo'q</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

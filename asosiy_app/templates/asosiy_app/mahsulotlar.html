@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Mahsulotlar - Django Shablon{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Mahsulotlar</h1>
+    
+    <!-- Qidiruv va filtrlar -->
+    <div class="bg-white p-6 rounded-lg shadow mb-8">
+        <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {{ qidiruv_form.as_p }}
+            <div class="flex items-end">
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                    <i class="fas fa-search"></i> Qidirish
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Mahsulotlar ro'yxati -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for mahsulot in mahsulotlar %}
+        <div class="bg-white rounded-lg shadow hover:shadow-xl transition">
+            <a href="{% url 'mahsulot_batafsil' mahsulot.slug %}">
+                {% if mahsulot.rasm %}
+                <img src="{{ mahsulot.rasm.url }}" alt="{{ mahsulot.nomi }}" class="w-full h-48 object-cover rounded-t-lg">
+                {% else %}
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center rounded-t-lg">
+                    <i class="fas fa-image text-4xl text-gray-400"></i>
+                </div>
+                {% endif %}
+            </a>
+            <div class="p-4">
+                <h3 class="font-semibold text-lg mb-2">{{ mahsulot.nomi }}</h3>
+                <p class="text-2xl font-bold text-blue-600">{{ mahsulot.joriy_narx|floatformat:0 }} so'm</p>
+                <a href="{% url 'mahsulot_batafsil' mahsulot.slug %}" class="mt-4 block w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 text-center">
+                    Ko'rish
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-12">
+            <p class="text-gray-500 text-xl">Mahsulotlar topilmadi</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="mt-8 flex justify-center">
+        <nav class="flex space-x-2">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="px-4 py-2 bg-white border rounded-lg hover:bg-gray-100">Birinchi</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-white border rounded-lg hover:bg-gray-100">Oldingi</a>
+            {% endif %}
+            
+            <span class="px-4 py-2 bg-blue-600 text-white rounded-lg">{{ page_obj.number }}</span>
+            
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-white border rounded-lg hover:bg-gray-100">Keyingi</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="px-4 py-2 bg-white border rounded-lg hover:bg-gray-100">Oxirgi</a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
