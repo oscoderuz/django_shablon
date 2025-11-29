@@ -168,7 +168,7 @@ class MahsulotAdmin(admin.ModelAdmin):
         Joriy narxni formatlangan holda ko'rsatish
         """
         narx = obj.joriy_narx()
-        return format_html('<strong>{:,.2f} so\'m</strong>', narx)
+        return format_html('<strong>{} so\'m</strong>', f'{narx:,.2f}')
     joriy_narx_display.short_description = 'Joriy narx'
     
     def chegirma_display(self, obj):
